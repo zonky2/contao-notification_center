@@ -25,33 +25,17 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\EventType;
+namespace NotificationCenter\Model\Notification;
 
+use NotificationCenter\Model\Notification;
 
-interface EventTypeInterface
+class Base extends Notification
 {
     /**
-     * Returns the tokens that contain valid recipient data (e.g. an email or a phone number)
-     * @return  array
+     * {@inheritdoc}
      */
-    public function getRecipientTokens();
-
-    /**
-     * Returns the tokens that contain valid text data
-     * @return  array
-     */
-    public function getTextTokens();
-
-    /**
-     * Returns the tokens that contain valid file data
-     * @return  array
-     */
-    public function getFileTokens();
-
-    /**
-     * Returns the description for a specific token
-     * @param   string The token
-     * @return  string The description
-     */
-    public function getTokenDescription($strToken);
+    public function getTokenDescription($strToken)
+    {
+        return $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][$this->type][$strToken] ?: '';
+    }
 }

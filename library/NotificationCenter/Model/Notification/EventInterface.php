@@ -25,34 +25,33 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\BagType;
+namespace NotificationCenter\Model\Event;
 
 
-use NotificationCenter\Model\Bag;
-
-class Base
+interface EventInterface
 {
     /**
-     * The bag model
-     * @var Bag
+     * Returns the tokens that contain valid recipient data (e.g. an email or a phone number)
+     * @return  array
      */
-    protected $objBag = null;
+    public function getRecipientTokens();
 
     /**
-     * Set the bag model
-     * @param   Bag
+     * Returns the tokens that contain valid text data
+     * @return  array
      */
-    public function __construct(Bag $objBag)
-    {
-        $this->objBag = $objBag;
-        \System::loadLanguageFile('tokens');
-    }
+    public function getTextTokens();
 
     /**
-     * {@inheritdoc}
+     * Returns the tokens that contain valid file data
+     * @return  array
      */
-    public function getTokenDescription($strToken)
-    {
-        return $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][$this->objBag->type][$strToken] ?: '';
-    }
+    public function getFileTokens();
+
+    /**
+     * Returns the description for a specific token
+     * @param   string The token
+     * @return  string The description
+     */
+    public function getTokenDescription($strToken);
 }

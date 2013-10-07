@@ -27,9 +27,8 @@
 
 namespace NotificationCenter\Model;
 
-use NotificationCenter\BagType\BagTypeInterface;
 
-class Notification extends \Model
+class Notification extends \Isotope\Model\TypeAgent
 {
 
     /**
@@ -39,42 +38,14 @@ class Notification extends \Model
     protected static $strTable = 'tl_nc_notification';
 
     /**
-     * Constructs the gateway
-     * @param   BagTypeInterface
-     * @param   string Language
-     * @return  GatewayInterface|null
+     * Interface to validate notification
+     * @var string
      */
-    public function buildGateway(BagTypeInterface $objBagType, $strLanguage)
-    {
-        if (($objGatewayModel = $this->getRelated('gateway')) === null) {
-            \System::log(sprintf(
-                'Could not find gateway ID "%s".',
-                $this->gateway),
-                __METHOD__,
-                TL_ERROR);
-            return null;
-        }
-
-        if (($objLanguage = Language::findByNotificationAndLanguageOrFallback($this, $strLanguage)) === null) {
-            \System::log(sprintf(
-                    'Could not find matching language or fallback for notification ID "%s" and language "%s".',
-                    $this->id,
-                    $strLanguage),
-                __METHOD__,
-                TL_ERROR);
-            return null;
-        }
-
-        return $objGatewayModel->buildGateway($objBagType, $this, $objLanguage);
-    }
+    protected static $strInterface = '\NotificationCenter\Model\Notification\NotificationInterface';
 
     /**
-     * Find by Bag
-     * @param   Bag
-     * @return  Notification|null
+     * List of types (classes) for this model
+     * @var array
      */
-    public static function findByBag(Bag $objBag, array $arrOptions=array())
-    {
-        return static::findByPid($objBag->id);
-    }
+    protected static $arrModelTypes = array();
 }

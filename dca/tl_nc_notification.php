@@ -59,7 +59,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
         ),
         'label' => array
         (
-            'fields'                  => array('title', 'event_type'),
+            'fields'                  => array('title', 'type'),
             'format'                  => '%s <span style="color:#ccc;">[%s]</span>'
         ),
         'global_operations' => array
@@ -105,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                     => '{title_legend},title,event_type,gateway;{conditions_legend},;{languages_legend},languages;',
+        'default'                     => '{title_legend},title,type,gateway;{conditions_legend},;{languages_legend},languages;',
     ),
 
     // Fields
@@ -128,13 +128,13 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
             'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
-        'event_type' => array
+        'type' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['event_type'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
-            'options'                 => array('iso_on_status_change'),
+            'options'                 => NotificationCenter\Model\Notification::getModelTypeOptions(),
             'eval'                    => array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"
         ),
