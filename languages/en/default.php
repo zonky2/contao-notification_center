@@ -25,29 +25,7 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\Model;
-
-use NotificationCenter\BagType\BagTypeInterface;
-use NotificationCenter\Gateway\GatewayInterface;
-
-class Gateway extends \Isotope\Model\TypeAgent
-{
-
-    /**
-     * Name of the current table
-     * @var string
-     */
-    protected static $strTable = 'tl_nc_gateway';
-
-    /**
-     * Interface to validate gateway
-     * @var string
-     */
-    protected static $strInterface = '\NotificationCenter\Model\Gateway\GatewayInterface';
-
-    /**
-     * List of types (classes) for this model
-     * @var array
-     */
-    protected static $arrModelTypes = array();
-}
+/**
+ * Gateway
+ */
+$GLOBALS['TL_LANG']['MODEL']['tl_nc_gateway.email']                 = array('Email', 'This is the default e-Mail gateway.');

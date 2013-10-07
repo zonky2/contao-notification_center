@@ -54,8 +54,7 @@ $GLOBALS['TL_MODELS']['tl_nc_gateway']                  = 'NotificationCenter\Mo
 $GLOBALS['TL_MODELS']['tl_nc_language']                 = 'NotificationCenter\Model\Language';
 $GLOBALS['TL_MODELS']['tl_nc_notification']             = 'NotificationCenter\Model\Notification';
 
-
 /**
- * Notification Center Gateways
+ * Gateways
  */
-$GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['email'] = 'NotificationCenter\Gateway\Email';
+\NotificationCenter\Model\Gateway::registerModelType('email', 'NotificationCenter\Model\Gateway\Email');

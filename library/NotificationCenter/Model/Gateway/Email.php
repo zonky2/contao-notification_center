@@ -25,7 +25,7 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\Gateway;
+namespace NotificationCenter\Model\Gateway;
 
 
 class Email extends Base implements GatewayInterface

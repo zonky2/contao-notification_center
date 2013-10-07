@@ -25,14 +25,13 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\Gateway;
+namespace NotificationCenter\Model\Gateway;
 
 use NotificationCenter\BagType\BagTypeInterface;
-use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Notification;
 
-class Base
+class Base extends Gateway
 {
     /**
      * The notification bag type
@@ -53,12 +52,6 @@ class Base
     protected $objLanguage = null;
 
     /**
-     * The gateway model
-     * @var Gateway
-     */
-    protected $objGateway = null;
-
-    /**
      * Set notification bag type and models
      * @param   BagTypeInterface
      * @param   Notification
@@ -68,14 +61,12 @@ class Base
     public function __construct(
         BagTypeInterface $objBagType,
         Notification $objNotification,
-        Language $objLanguage,
-        Gateway $objGateway
+        Language $objLanguage
     )
     {
         $this->objBagType           = $objBagType;
         $this->objNotification      = $objNotification;
         $this->objLanguage          = $objLanguage;
-        $this->objGateway           = $objGateway;
     }
 
     /**
@@ -103,15 +94,6 @@ class Base
     public function getLanguage()
     {
         return $this->objLanguage;
-    }
-
-    /**
-     * Gets the gateway
-     * @return  Gateway
-     */
-    public function getGateway()
-    {
-        return $this->objGateway;
     }
 
     /**
