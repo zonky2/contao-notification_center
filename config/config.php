@@ -32,10 +32,10 @@ array_insert($GLOBALS['BE_MOD'], 1, array
 (
     'notification_center' => array
     (
-        'nc_bags' => array
+        'nc_notifications' => array
         (
-            'tables'        => array('tl_nc_bag', 'tl_nc_notification', 'tl_nc_language'),
-            'icon'          => 'system/modules/notification_center/assets/bag.png',
+            'tables'        => array('tl_nc_notification', 'tl_nc_language'),
+            'icon'          => 'system/modules/notification_center/assets/notification.png',
             'stylesheet'    => 'system/modules/notification_center/assets/autosuggester.css',
             'javascript'    => 'system/modules/notification_center/assets/autosuggester.js',
         ),

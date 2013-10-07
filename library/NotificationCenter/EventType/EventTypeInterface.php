@@ -25,24 +25,33 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter;
+namespace NotificationCenter\EventType;
 
-class tl_nc_bag extends \Backend
+
+interface EventTypeInterface
 {
     /**
-     * Get all registered bag types
+     * Returns the tokens that contain valid recipient data (e.g. an email or a phone number)
      * @return  array
      */
-    public function getBagTypes()
-    {
-        $arrBagTypes = array();
+    public function getRecipientTokens();
 
-        if (is_array($GLOBALS['NOTIFICATION_CENTER']['BAGTYPE']) && !empty($GLOBALS['NOTIFICATION_CENTER']['BAGTYPE'])) {
-            foreach ($GLOBALS['NOTIFICATION_CENTER']['BAGTYPE'] as $strGroup => $arrType) {
-                $arrBagTypes[$strGroup] = array_keys($arrType);
-            }
-        }
+    /**
+     * Returns the tokens that contain valid text data
+     * @return  array
+     */
+    public function getTextTokens();
 
-        return $arrBagTypes;
-    }
+    /**
+     * Returns the tokens that contain valid file data
+     * @return  array
+     */
+    public function getFileTokens();
+
+    /**
+     * Returns the description for a specific token
+     * @param   string The token
+     * @return  string The description
+     */
+    public function getTokenDescription($strToken);
 }

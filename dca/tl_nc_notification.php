@@ -34,7 +34,6 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     // Config
     'config' => array
     (
-        'ptable'                      => 'tl_nc_bag',
         'ctable'                      => array('tl_nc_language'),
         'dataContainer'               => 'Table',
         'switchToEdit'                => true,
@@ -44,7 +43,6 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
             'keys' => array
             (
                 'id'    => 'primary',
-                'pid'   => 'index'
             )
         )
     ),
@@ -54,17 +52,15 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     (
         'sorting' => array
         (
-            'mode'                    => 4,
+            'mode'                    => 1,
             'fields'                  => array('title'),
             'flag'                    => 1,
             'panelLayout'             => 'filter;search,limit',
-            'headerFields'            => array('title', 'type'),
-            'child_record_callback'   => array('NotificationCenter\tl_nc_notification', 'listRows'),
         ),
         'label' => array
         (
-            'fields'                  => array('title'),
-            'format'                  => '%s'
+            'fields'                  => array('title', 'event_type'),
+            'format'                  => '%s <span style="color:#ccc;">[%s]</span>'
         ),
         'global_operations' => array
         (
@@ -109,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                     => '{title_legend},title,gateway;{languages_legend},languages;',
+        'default'                     => '{title_legend},title,event_type,gateway;{conditions_legend},;{languages_legend},languages;',
     ),
 
     // Fields
@@ -118,12 +114,6 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
         'id' => array
         (
             'sql'                     => "int(10) unsigned NOT NULL auto_increment"
-        ),
-        'pid' => array
-        (
-            'foreignKey'              => 'tl_nc_bag.title',
-            'sql'                     => "int(10) unsigned NOT NULL default '0'",
-            'relation'                => array('type'=>'belongsTo', 'load'=>'lazy')
         ),
         'tstamp' => array
         (
@@ -135,8 +125,18 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
             'exclude'                 => true,
             'search'                  => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr'),
+            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'event_type' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['event_type'],
+            'exclude'                 => true,
+            'filter'                  => true,
+            'inputType'               => 'select',
+            'options'                 => array('iso_on_status_change'),
+            'eval'                    => array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(32) NOT NULL default ''"
         ),
         'gateway' => array
         (
