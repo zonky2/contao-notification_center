@@ -3,13 +3,14 @@
 /**
  * notification_center extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2015, terminal42
+ * @copyright  Copyright (c) 2008-2021, terminal42
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
 
 namespace NotificationCenter;
 
+use Contao\StringUtil;
 use NotificationCenter\Util\Form;
 
 class tl_form extends \Backend
@@ -76,25 +77,59 @@ class tl_form extends \Backend
      */
     public function generateTokens(array $arrData, array $arrForm, array $arrFiles, array $arrLabels, $delimiter)
     {
-        $arrTokens = array();
-        $arrTokens['raw_data'] = '';
+        $arrTokens                  = [];
+        $arrTokens['raw_data']      = '';
+        $arrTokens['template_data'] = [];
 
+        // Data to use in message.
         foreach ($arrData as $k => $v) {
             \Haste\Util\StringUtil::flatten($v, 'form_'.$k, $arrTokens, $delimiter);
             $arrTokens['formlabel_'.$k] = isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k);
             $arrTokens['raw_data'] .= (isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
         }
 
+        // Add formconfig.
         foreach ($arrForm as $k => $v) {
-            \Haste\Util\StringUtil::flatten($v, 'formconfig_'.$k, $arrTokens, $delimiter);
+            \Haste\Util\StringUtil::flatten($v, 'formconfig_' . $k, $arrTokens, $delimiter);
+            if (is_string($v)) {
+                $arrTokens['template_data']['formconfig'][$k] = $v;
+            }
         }
 
-        // Administrator e-mail
+        // Administrator email.
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
-        // Upload fields
+        // Delimeter.
+        $arrTokens['delimiter'] = $delimiter;
+
+        // Upload fields.
         foreach ($arrFiles as $fieldName => $file) {
-            $arrTokens['form_' . $fieldName] = Form::getFileUploadPathForToken($file);
+            $arrTokens['form_' . $fieldName]                = Form::getFileUploadPathForToken($file);
+            $arrTokens['template_data']['file'][$fieldName] = Form::getFileUploadPathForToken($file);
+        }
+
+        // Data to use in template.
+        $fields = [];
+        foreach (\FormFieldModel::findByPid($arrForm['id']) as $field) {
+            $fields[$field->name] = $field;
+        }
+
+        foreach ($arrData as $k => $v) {
+            $arrTokens['template_data']['name'][]      = $k;
+            $arrTokens['template_data']['value'][$k]   = $v;
+            $arrTokens['template_data']['label'][$k]   = isset($arrLabels[$k]) ? $arrLabels[$k] : $k;
+            $arrTokens['template_data']['type'][$k]    = $fields[$k]->type;
+            $arrTokens['template_data']['options'][$k] = null;
+            if (null !== $fields[$k]->options) {
+                foreach (StringUtil::deserialize($fields[$k]->options, true) as $option) {
+                    if (is_array($v) && in_array($option['value'], $v)) {
+                        $arrTokens['template_data']['options'][$k][$option['value']] = $option['label'];
+                    }
+                    if (!is_array($v) && $option['value'] == $v) {
+                        $arrTokens['template_data']['options'][$k] = $option['label'];
+                    }
+                }
+            }
         }
 
         return $arrTokens;
